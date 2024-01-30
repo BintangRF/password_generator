@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Generator</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        Generate your <br />
+        <b>Password!</b>
+      </h1>
+      <div class="display">
+        <input type="text" id="password" placeholder="Password" />
+        <div class="tooltip-container">
+          <img
+            src="images/copy.png"
+            id="copy"
+            alt=""
+            onclick="copyPassword()" />
+          <div class="tooltip">Copy Password</div>
+        </div>
+
+        <div class="clear" onclick="clearPassword()">x</div>
+      </div>
+
+      <button id="btnGenerate" onclick="createPassword()">
+        <img src="images/generate.png" alt="" />Generate Password
+      </button>
+    </div>
+
+    <script>
+      const passwordBox = document.getElementById("password");
+      const length = 12;
+
+      const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+      const number = "0123456789";
+      const symbol = "@#$%^&()_+~|}{[]<>/-=";
+
+      const allChars = upperCase + lowerCase + number + symbol;
+
+      function createPassword() {
+        let pass = "";
+        pass += upperCase[Math.floor(Math.random() * upperCase.length)];
+        pass += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+        pass += number[Math.floor(Math.random() * number.length)];
+        pass += symbol[Math.floor(Math.random() * symbol.length)];
+
+        while (length > pass.length) {
+          pass += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+
+        passwordBox.value = pass;
+
+        updateClearButton();
+      }
+
+      function copyPassword() {
+        passwordBox.select();
+        document.execCommand("copy");
+
+        const tooltip = document.querySelector(".tooltip");
+        tooltip.innerText = "Copied!";
+        setTimeout(() => {
+          tooltip.innerText = "Copy Password";
+        }, 5000);
+      }
+
+      function updateClearButton() {
+        const clear = document.querySelector(".clear");
+
+        if (passwordBox.value === "") {
+          clear.style.display = "none";
+        } else {
+          clear.style.display = "block";
+        }
+      }
+
+      function clearPassword() {
+        passwordBox.value = "";
+        updateClearButton();
+      }
+
+      updateClearButton();
+    </script>
+  </body>
+</html>
